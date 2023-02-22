@@ -7,6 +7,7 @@ import sda.practise.person.PersonByAgeComparator;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -126,5 +127,15 @@ public class Demo {
         System.out.println("Sprawdzenie mapy");
         peopleByName.keySet().forEach(System.out::println);
         peopleByName.values().forEach(person -> System.out.println(person.personInfo(false)));
+
+        Map<String, List<Person>> childrenBySurname = allPeople.stream()
+                .map(Person::getChildren)
+                .flatMap(Collection::stream)
+                //Collectors.toMap powoduje że mamy błąd bo jest więcej niż 1 osoba z tym samym nazwiskiem
+                //.collect(Collectors.toMap(Person::getSurname, Function.identity()));
+                //grupujemy elementy po nazwisku, pakujemy wartości z tym samym nazwiskiem do listy
+                .collect(Collectors.groupingBy(Person::getSurname, Collectors.toList()));
+
+        System.out.println("Children by surname");
     }
 }
