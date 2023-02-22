@@ -108,3 +108,8 @@ Wypisać wszystkie które są przeznaczone dla 12 lat i więcej
 Wypisać wszystkie puzzle i klocki
 
 Policzyć sumę wartości wszystkich lalek
+
+Dodać możliwość wprowadzenia nowej zabawki z numerem rodzaju (tego enuma) np new Klocki(1, nazwa, wiek, cena, ...)
+Wypisać do pliku listę zabawek - alfabetycznie
+Wypisać do pliku listę zabawek - sortując po cenie malejąco
+
