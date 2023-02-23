@@ -2,10 +2,10 @@ package sda.practise.toy;
 
 public abstract class Toy {
     private String name;
-    private String minAge;
+    private int minAge;
     private int price;
 
-    Toy(String name, String minAge, int price) {
+    Toy(String name, int minAge, int price) {
         this.name = name;
         this.minAge = minAge;
         this.price = price;
@@ -15,7 +15,7 @@ public abstract class Toy {
         return name;
     }
 
-    public String getMinAge() {
+    public int getMinAge() {
         return minAge;
     }
 
@@ -23,9 +23,24 @@ public abstract class Toy {
         return price;
     }
 
-    public static Toy returnToyByType(String typeAbbrv, String name, String minAge, int price) {
+    public abstract ToyType getToyType();
+
+    String info() {
+        return new StringBuilder(name)
+                .append(", minAge: ")
+                .append(minAge)
+                .append(", price: ")
+                .append(price)
+                .toString();
+    }
+
+    public static Toy returnToyByTypeAbbrv(String typeAbbrv, String name, int minAge, int price) {
         ToyType toyType = ToyType.findByAbbrv(typeAbbrv);
 
+        return returnToyByType(name, minAge, price, toyType);
+    }
+
+    private static Toy returnToyByType(String name, int minAge, int price, ToyType toyType) {
         switch (toyType) {
             case DOLL:
                 return new Doll(name, minAge, price);
@@ -38,5 +53,10 @@ public abstract class Toy {
             default:
                 throw new IllegalArgumentException("Toy type undefined");
         }
+    }
+
+    public static Toy returnToyByTypeIndex(int typeIndex, String name, int minAge, int price) {
+        ToyType toyType = ToyType.findByIndex(typeIndex);
+        return returnToyByType(name, minAge, price, toyType);
     }
 }

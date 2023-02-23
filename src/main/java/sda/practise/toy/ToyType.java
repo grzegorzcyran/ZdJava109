@@ -16,6 +16,10 @@ public enum ToyType {
         this.polishTranslation = polishTranslation;
     }
 
+    public String getPolishTranslation() {
+        return polishTranslation;
+    }
+
     public static ToyType findByAbbrv(String abbreviation) {
         for(ToyType type : ToyType.values()) {
             if(type.abbreviation.equalsIgnoreCase(abbreviation)) {
