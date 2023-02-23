@@ -1,6 +1,8 @@
 package sda.practise.toy;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ToyDemo {
@@ -13,25 +15,54 @@ public class ToyDemo {
 
         List<Toy> toys = List.of(legoMustang, legoFriends, puzzleTajMahal, doll1);
 
-//        Wypisać wszystkie które są przeznaczone dla 12 lat i więcej
+        System.out.println("\n==============================");
+        System.out.println("wszystkie zabawki które są przeznaczone dla 12 lat i więcej");
         toys.stream()
                 .filter(each -> each.getMinAge() >= 12)
                 .forEach(each -> System.out.println(each.info()));
-//        Wypisać wszystkie puzzle i klocki
+
         System.out.println("\n==============================");
+        System.out.println("wszystkie puzzle i klocki");
         toys.stream()
                 .filter(each -> each.getToyType() == ToyType.BRICKS || each.getToyType() == ToyType.PUZZLE)
                 .forEach(each -> System.out.println(each.info()));
-//        Policzyć sumę wartości wszystkich lalek
-        System.out.println("\n==============================");
 //
-//        Dodać możliwość wprowadzenia nowej zabawki z numerem rodzaju (tego enuma) np new Klocki(1, nazwa, wiek, cena, ...)
+        System.out.println("\n==============================");
+        System.out.println("Policzyć sumę wartości wszystkich lalek");
+        int dollsSum = toys.stream()
+                .filter(each -> each.getToyType() == ToyType.DOLL)
+                .map(Toy::getPrice)
+                .reduce(0, (existing, incoming) -> existing + incoming);
+        System.out.println("Suma wartości lalek: " + dollsSum);
 //        Wypisać do pliku listę zabawek - alfabetycznie
 //        Wypisać do pliku listę zabawek - sortując po cenie malejąco
 //        Wypisać do pliku listę zabawek wybierając najdroższą zabawkę danego typu - czyli np najdroższe klocki, najdroższe puzzle itd - plik wygenerować w osobnym wątku
 //
 //        Wypisać podsumowanie ile kosztują łącznie zabawki poszczególnych typów - np pluszaki łącznie 300
+        System.out.println("\n==============================");
+        System.out.println("podsumowanie ile kosztują łącznie zabawki poszczególnych typów");
+        Map<ToyType, Integer> toysValueByType = toys.stream()
+                .collect(Collectors.groupingBy(Toy::getToyType, Collectors.toList()))
+                .entrySet().stream()
+                .map(entry -> countForType(entry))
+                .flatMap(map -> map.entrySet().stream())
+                .collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue()));
 
+        toysValueByType.entrySet()
+                .stream()
+                .forEach(each -> System.out.println(each.getKey().getPolishTranslation() + " : " + each.getValue()));
 
+    }
+
+    private static Map<ToyType, Integer> countForType(Map.Entry<ToyType, List<Toy>> entry) {
+        ToyType toyType = entry.getKey();
+        Map<ToyType, Integer> result = new HashMap<>();
+
+        int sum = entry.getValue()
+                .stream()
+                .map(Toy::getPrice)
+                .reduce(0, (x, y) -> x + y);
+        result.put(toyType, sum);
+        return result;
     }
 }
