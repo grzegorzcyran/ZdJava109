@@ -15,6 +15,10 @@ public class ToyDemo {
 
         List<Toy> toys = List.of(legoMustang, legoFriends, puzzleTajMahal, doll1);
 
+        List<Toy> toysAsArekWanted = List.of(Toy.returnToyByTypeAbbrv("kl", "Ford Mustang", 16, 699),
+                Toy.returnToyByTypeAbbrv("kl", "Marketplace", 7, 349),
+                Toy.returnToyByTypeAbbrv("l", "Surfing Barbie", 7, 250));
+
         System.out.println("\n==============================");
         System.out.println("wszystkie zabawki które są przeznaczone dla 12 lat i więcej");
         toys.stream()
@@ -51,6 +55,17 @@ public class ToyDemo {
         toysValueByType.entrySet()
                 .stream()
                 .forEach(each -> System.out.println(each.getKey().getPolishTranslation() + " : " + each.getValue()));
+
+
+        System.out.println("\n==============================");
+        System.out.println("Przekształcenie wszystkich klocków ogólnego typu zabawki na klocki");
+        List<Bricks> bricks = toys.stream()
+                .filter(toy -> toy instanceof Bricks)
+                .map(each -> (Bricks)each)
+                .collect(Collectors.toList());
+        System.out.println("wypisuję klocki:");
+        bricks.forEach(each -> System.out.println(each.info()));
+
 
     }
 
